@@ -1,0 +1,91 @@
+.layout-container {
+  position: relative; // para que loader-overlay sea absoluto dentro de aquí
+  min-height: 100vh;  // para que el área cubra toda la pantalla verticalmente
+  overflow: hidden;
+  inset: 0;
+  background: rgba(20, 39, 64, 0.85); // fondo azul oscuro con transparencia
+  background-image: url('../assets/form_horizontal.png');
+}
+
+.loader-overlay {
+  position: absolute;  // para superponer sobre el contenido
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(20, 39, 64, 0.3); // más sutil, solo detrás de los corazones
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; // permite interacción con el contenido debajo
+  z-index: 10;
+
+  .hearts {
+    display: flex;
+    gap: 15px;
+    pointer-events: auto; // si quieres que el loader no interfiera en clicks, sino lo puedes quitar
+  }
+
+  .heart {
+    width: 24px;
+    height: 24px;
+    background-color: #d8a865;
+    transform: rotate(45deg);
+    position: relative;
+    animation: blink 1s infinite ease-in-out;
+  }
+
+  .heart::before,
+  .heart::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background-color: #d8a865;
+    border-radius: 50%;
+  }
+
+  .heart::before {
+    top: -12px;
+    left: 0;
+  }
+
+  .heart::after {
+    left: -12px;
+    top: 0;
+  }
+
+  .heart:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .heart:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  p {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #d8a865;
+    font-weight: bold;
+    font-family: 'Arial Rounded MT', sans-serif;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .envelope {
+    background-image: url('../assets/FORM_VERTICAL.png');
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 0.2;
+    transform: rotate(45deg) scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(45deg) scale(1.2);
+  }
+}

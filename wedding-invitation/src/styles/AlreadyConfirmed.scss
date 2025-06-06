@@ -1,0 +1,120 @@
+@use './variables' as *;
+@use "sass:color";
+
+$dark-overlay: rgba(10, 29, 46, 0.6);
+$white-card: rgba(255, 255, 255, 0.95);
+$button-bg: #996633;
+$button-hover: #7a5229;
+$blue-light: #022e55;
+
+.already-confirmed-container {
+  position: relative;
+  min-height: 100vh;
+  background-image: url('../assets/form_horizontal.png'); // Ojo: usa slash inicial
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+
+  .card {
+    position: relative;
+    z-index: 2;
+    max-width: 500px;
+    width: 90%;
+    margin: 0 1rem;
+    padding: 2rem;
+    background: $white-card;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      color: $blue-dark;
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+    }
+
+    p {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      line-height: 1.4;
+      color: $button-bg;
+    }
+
+    button {
+      background-color: #d8a865;
+      color: black;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: $button-hover;
+      }
+    }
+  }
+
+  p.error {
+    color: #e74c3c;
+    font-weight: bold;
+    margin-top: 1rem;
+  }
+
+  p.success {
+    color: $blue-dark;
+    font-weight: bold;
+    margin-top: 1rem;
+  }
+}
+
+// Media query para orientación vertical
+@media screen and (orientation: portrait) {
+  .already-confirmed-container {
+    background-image: url('../assets/FORM_VERTICAL.png');
+
+    .card {
+      padding: 1.5rem;
+      max-width: 75%;
+      margin: 0 0.5rem;
+
+      h2 {
+        font-size: 1.6rem;
+        margin-bottom: 0.8rem;
+      }
+
+      p {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+      }
+    }
+  }
+}
+
+.invalid-code-container {
+  @extend .already-confirmed-container; // Usa mismos estilos base
+  background-image: url('/assets/form_horizontal.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+// En orientación VERTICAL
+@media screen and (orientation: portrait) {
+  .invalid-code-container {
+    background-image: url('../assets/FORM_VERTICAL.png');
+  }
+  .card{
+      max-width: 250px
+    }
+}

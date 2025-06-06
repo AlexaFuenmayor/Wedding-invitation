@@ -1,0 +1,134 @@
+@use './variables' as *;
+@use 'sass:color';
+
+$dark-overlay: rgba(10, 29, 46, 0.6);
+$white-card: rgba(255, 255, 255, 0.95);
+$heading-color: #c99042;
+$text-color: #2c3e50;
+$accent-color: #ad833c;
+$button-bg: #d8a865;
+$button-hover: #b8863b;
+$blue-light: #022e55;
+
+.confirmation-page {
+  position: relative;
+  min-height: 100vh;
+  background-image: url('../assets/form_horizontal.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Playfair Display', serif;
+  padding: 2rem 1rem;
+  text-align: center;
+
+  .confirmation-title {
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+    z-index: 3;
+    color: $heading-color;
+
+    h2 {
+      display: inline-block;
+      font-size: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  section {
+    position: relative;
+    background: $white-card;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 90%;
+    padding: 2rem;
+    border: 2px solid $accent-color;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 2;
+    text-align: left;
+
+    h3, h4 {
+      color: $blue-light;
+      text-align: center;
+    }
+
+    p {
+      font-size: 1rem;
+      color: $text-color;
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+
+      strong {
+        color: $accent-color;
+      }
+
+      &.last {
+        margin-top: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+      }
+    }
+  }
+
+  // Botón fuera de la tarjeta
+  .confirmation-button {
+    margin-top: 2rem;
+    z-index: 2;
+
+    button {
+      background-color: $button-bg;
+      color: #000;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: $button-hover;
+      }
+    }
+  }
+}
+
+// Vista en orientación vertical (teléfono)
+@media screen and (orientation: portrait) {
+  .confirmation-page {
+    background-image: url('../assets/FORM_VERTICAL.png');
+
+    section {
+      padding: 1.5rem;
+      max-width: 70%;
+      margin: 0 1rem;
+
+      p {
+        font-size: 0.95rem;
+      }
+    }
+
+// .confirmation-title h2 {
+//   font-size: 1.6rem;
+//   padding: 0.8rem 1.5rem;
+//   box-shadow: none;
+//   color: #e6d5d5;
+//   text-shadow: 
+//     -1px -1px 0 $dark-overlay,
+//      1px -1px 0 $dark-overlay,
+//     -1px  1px 0 $dark-overlay,
+//      1px  1px 0 $dark-overlay;
+// }
+
+
+    .confirmation-button {
+      margin-top: 1.5rem;
+
+      button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+      }
+    }
+  }
+}
