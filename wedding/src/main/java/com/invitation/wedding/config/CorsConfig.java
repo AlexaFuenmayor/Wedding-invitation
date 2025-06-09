@@ -16,7 +16,7 @@ public class CorsConfig {
                 registry.addMapping("/**")
                         .allowedOrigins(
                                 "http://localhost:5173",
-                                "https://wedding-invitation-eosin-eight.vercel.app/familia/familia"
+                                "https://wedding-invitation-eosin-eight.vercel.app"
                         )
                         // Cambia si usas otro puerto/frontend
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
