@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import '../styles/InvitationForm.scss'
 import Layout from './Layout'
 import InvalidCode from '../pages/InvalidCode.jsx'
+import codes from '../utils/codes'
 
 function InvitationForm() {
   const API_URL = import.meta.env.VITE_API_URL
@@ -15,9 +16,9 @@ function InvitationForm() {
     telefono: ''
   })
   const [status, setStatus] = useState({ loading: true, error: null })
+  const [formError, setFormError] = useState(null)
   const location = useLocation()
   const navigate = useNavigate()
-  const [formError, setFormError] = useState(null)
 
   const code = new URLSearchParams(location.search).get('code')
 
@@ -62,73 +63,89 @@ function InvitationForm() {
     setForm(prev => ({ ...prev, [name]: value }))
   }
 
-const handleSubmit = e => {
-  e.preventDefault()
+  const validateForm = () => {
+    const telefonoLimpio = form.telefono.replace(/\D/g, '')
 
-  const telefonoLimpio = form.telefono.replace(/\D/g, '') // Solo dígitos
-
-  if (form.asistira === 'no') {
-    if (telefonoLimpio.length < 10) {
-      setFormError('Por favor ingresa un número de teléfono válido (mínimo 10 dígitos).')
-      return
+    if (!form.asistira) {
+      setFormError('Por favor selecciona si asistirás.')
+      return false
     }
+
+    if (form.asistira === 'si') {
+      if (Number(form.asistentesConfirmados) < 1) {
+        setFormError('Indica al menos 1 asistente.')
+        return false
+      }
+    }
+
+    if (form.asistira === 'no') {
+      if (telefonoLimpio.length < 10) {
+        setFormError('Por favor ingresa un número de teléfono válido (mínimo 10 dígitos).')
+        return false
+      }
+    }
+
+    setFormError(null)
+    return true
   }
 
-  setStatus({ loading: true, error: null })
-  setFormError(null) // Limpiar errores anteriores si todo está bien
+  const handleSubmit = e => {
+    e.preventDefault()
+    if (!validateForm()) return
 
-  const cuerpo = {
-    asistentesConfirmados: form.asistira === 'si' ? Number(form.asistentesConfirmados) : 0,
-    mensaje: form.mensaje,
-    telefono: telefonoLimpio
-  }
+    const telefonoLimpio = form.telefono.replace(/\D/g, '')
+    setStatus({ loading: true, error: null })
 
-  fetch(`${API_URL}/api/guests/codigo/${code}/confirmar`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(cuerpo)
-  })
-    .then(async res => {
-      const text = await res.text()
-      let data = null
+    const cuerpo = {
+      asistentesConfirmados: form.asistira === 'si' ? Number(form.asistentesConfirmados) : 0,
+      mensaje: form.mensaje,
+      telefono: telefonoLimpio
+    }
 
-      try {
-        data = JSON.parse(text)
-      } catch (error) {
-        throw new Error(text || 'Error al confirmar')
-      }
+    fetch(`${API_URL}/api/guests/codigo/${code}/confirmar`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cuerpo)
+    })
+      .then(async res => {
+        const text = await res.text()
+        let data = null
 
-      if (!res.ok) {
-        if (data.asistenciaConfirmada !== undefined) {
-          navigate('/already-confirmed', {
-            state: {
-              confirmacion: data.asistenciaConfirmada,
-              familia: data.familia || 'Invitado',
-              telefono: data.telefono || form.telefono,
-              asistentesConfirmados: data.asistentesConfirmados
-            }
-          })
-        } else {
-          throw new Error(data.message || 'Error al confirmar')
+        try {
+          data = JSON.parse(text)
+        } catch (error) {
+          throw new Error(text || 'Error al confirmar')
         }
-        return
-      }
 
-      navigate('/confirmacion', {
-        state: {
-          confirmacion: form.asistira === 'si',
-          familia: data.familia || 'Invitado',
-          telefono: data.telefono || form.telefono,
-          asistentesConfirmados: data.asistentesConfirmados
+        if (!res.ok) {
+          if (data.asistenciaConfirmada !== undefined) {
+            navigate('/already-confirmed', {
+              state: {
+                confirmacion: data.asistenciaConfirmada,
+                familia: data.familia || 'Invitado',
+                telefono: data.telefono || form.telefono,
+                asistentesConfirmados: data.asistentesConfirmados
+              }
+            })
+          } else {
+            throw new Error(data.message || 'Error al confirmar')
+          }
+          return
         }
+
+        navigate('/confirmacion', {
+          state: {
+            confirmacion: form.asistira === 'si',
+            familia: data.familia || 'Invitado',
+            telefono: data.telefono || form.telefono,
+            asistentesConfirmados: data.asistentesConfirmados
+          }
+        })
       })
-    })
-    .catch(err => {
-      setStatus({ loading: false, error: err.message })
-    })
-}
-
-
+      .catch(err => {
+        setStatus({ loading: false, error: err.message })
+      })
+  }
 
   if (status.loading) {
     return (
@@ -208,11 +225,10 @@ const handleSubmit = e => {
                 onChange={handleChange}
                 inputMode="numeric"
                 pattern="\d*"
+                maxLength="15"
                 required
               />
-                {formError && (
-    <small className="input-error">{formError}</small>
-  )}
+              {formError && <small className="input-error">{formError}</small>}
             </label>
           </div>
         )}
@@ -229,7 +245,11 @@ const handleSubmit = e => {
           </label>
         </div>
 
-        <button type="submit">Enviar confirmación</button>
+        {formError && <p className="input-error">{formError}</p>}
+
+        <button type="submit" disabled={status.loading}>
+          {status.loading ? 'Enviando...' : 'Enviar confirmación'}
+        </button>
       </form>
     </div>
   )
