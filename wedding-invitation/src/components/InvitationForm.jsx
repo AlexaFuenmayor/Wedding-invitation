@@ -6,6 +6,7 @@ import Layout from './Layout'
 import InvalidCode from '../pages/InvalidCode.jsx'
 
 function InvitationForm() {
+  const API_URL = import.meta.env.VITE_API_URL
   const [guest, setGuest] = useState(null)
   const [form, setForm] = useState({
     asistira: '',
@@ -26,7 +27,7 @@ function InvitationForm() {
       return
     }
 
-    fetch(`http://localhost:8080/api/guests/codigo/${code}`)
+    fetch(`${API_URL}/api/guests/codigo/${code}`)
       .then(async res => {
         const text = await res.text()
         let data
@@ -82,7 +83,7 @@ const handleSubmit = e => {
     telefono: telefonoLimpio
   }
 
-  fetch(`http://localhost:8080/api/guests/codigo/${code}/confirmar`, {
+  fetch(`${API_URL}/api/guests/codigo/${code}/confirmar`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(cuerpo)
