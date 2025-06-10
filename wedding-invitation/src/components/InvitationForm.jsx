@@ -228,7 +228,7 @@ function InvitationForm() {
                 maxLength="15"
                 required
               />
-              {formError && <small className="input-error">{formError}</small>}
+              {/* {formError && <small className="input-error">{formError}</small>} */}
             </label>
           </div>
         )}

@@ -95,40 +95,51 @@ $blue-light: #022e55;
 }
 
 // Vista en orientación vertical (teléfono)
-@media screen and (orientation: portrait) {
-  .confirmation-page {
-    background-image: url('../assets/FORM_VERTICAL.png');
+@media screen and (orientation: portrait) {.confirmation-page {
+  position: relative;
+  background-image: url('../assets/FORM_VERTICAL.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  z-index: 0;
 
-    section {
-      padding: 1.5rem;
-      max-width: 70%;
-      margin: 0 1rem;
+  // Capa oscura sobre la imagen
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4); // Ajusta la opacidad aquí
+    z-index: 1;
+  }
 
-      p {
-        font-size: 0.95rem;
-      }
-    }
+  // Elevar el contenido para que quede sobre la capa oscura
+  section,
+  .confirmation-button {
+    position: relative;
+    z-index: 2;
+  }
 
-// .confirmation-title h2 {
-//   font-size: 1.6rem;
-//   padding: 0.8rem 1.5rem;
-//   box-shadow: none;
-//   color: #e6d5d5;
-//   text-shadow: 
-//     -1px -1px 0 $dark-overlay,
-//      1px -1px 0 $dark-overlay,
-//     -1px  1px 0 $dark-overlay,
-//      1px  1px 0 $dark-overlay;
-// }
+  section {
+    padding: 1.5rem;
+    max-width: 70%;
+    margin: 0 1rem;
 
-
-    .confirmation-button {
-      margin-top: 1.5rem;
-
-      button {
-        padding: 0.6rem 1.2rem;
-        font-size: 0.95rem;
-      }
+    p {
+      font-size: 0.95rem;
     }
   }
+
+  .confirmation-button {
+    margin-top: 1.5rem;
+
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.95rem;
+    }
+  }
+}
 }

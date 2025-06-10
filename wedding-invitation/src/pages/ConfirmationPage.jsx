@@ -30,14 +30,16 @@ function ConfirmationPage() {
             <h4>Detalles importantes:</h4>
             <p><strong>📅 Fecha:</strong> 10/10/2025</p>
             <p><strong>📍 Lugar:</strong> Calle 75a #24-35 Iglesia Bautista Soberana Gracia</p>
+            <p><strong>🎁 Si desean darnos un presente:</strong> la lluvia de sobres será una opción muy apreciada.</p>
             <p><strong>🎩 Código de vestimenta:</strong> Semi Formal</p>
             <p><strong>🚫 Abstenerse de vestir:</strong> Azul, dorado, blanco</p>
             <p className="last">¡Les esperamos!</p>
+
           </>
         ) : (
           <>
             <p>Pocos días antes enviaremos el enlace al número : <strong>{telefono}</strong></p>
-        
+
             <p className="last">¡Abrazos!</p>
           </>
         )}
