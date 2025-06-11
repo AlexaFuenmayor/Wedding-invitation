@@ -47,7 +47,8 @@ function InvitationCard() {
   Chiquito_Magdaleno: 'CHMA033',
   Ramirez_González: 'RAGO034',
   Daniela_Patricia: 'DAPA035',
-  Quiñones_Gonzalez: 'QUIG036'
+  Quiñones_Gonzalez: 'QUIG036',
+  Alvarez_Medina: 'ALME038'
   }
 
   // Si “familia” no está en nuestro objeto de códigos, mostramos mensaje de enlace inválido
