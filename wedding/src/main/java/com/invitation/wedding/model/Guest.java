@@ -11,23 +11,15 @@ public class Guest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Nombre o identificador de la familia
     private String familia;
-
-    // Número máximo de personas invitadas (ya registrado)
     private Integer maxAsistentes;
-
-    // Número de personas que confirmaron (llenado en el formulario)
     private Integer asistentesConfirmados;
-
-    // Mensaje personalizado al confirmar
     private String mensaje;
     private String telefono;
 
-    // Si confirmaron su asistencia o no
-    private Boolean asistenciaConfirmada;
+    @Enumerated(EnumType.STRING)
+    private EstadoConfirmacion estadoConfirmacion = EstadoConfirmacion.PENDIENTE;
 
-    // Código único para validar que solo esa familia acceda
     @Column(unique = true)
     private String codigoAcceso;
 

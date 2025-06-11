@@ -17,7 +17,7 @@ function ConfirmationPage() {
         <h2>
           {confirmacion
             ? '¡Gracias por confirmar tu asistencia!'
-            : 'Gracias por hacérnoslo saber'}
+            : 'Gracias por informarnos'}
         </h2>
       </div>
 

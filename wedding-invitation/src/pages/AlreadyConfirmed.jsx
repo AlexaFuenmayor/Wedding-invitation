@@ -1,4 +1,3 @@
-// src/components/AlreadyConfirmed.jsx
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import '../styles/AlreadyConfirmed.scss'
@@ -6,9 +5,11 @@ import '../styles/AlreadyConfirmed.scss'
 function AlreadyConfirmed() {
   const location = useLocation()
   const navigate = useNavigate()
-  const data = location.state
+  const confirmationData = location.state
 
-  if (!data) {
+  console.log('🚀 Datos de confirmación recibidos:', confirmationData)
+
+  if (!confirmationData) {
     return (
       <div className="already-confirmed-container">
         <motion.div
@@ -24,6 +25,14 @@ function AlreadyConfirmed() {
     )
   }
 
+  const {
+    familia = 'Invitado',
+    confirmacion,
+    asistentesConfirmados,
+    telefono,
+    mensaje
+  } = confirmationData
+
   return (
     <div className="already-confirmed-container">
       <motion.div
@@ -32,23 +41,30 @@ function AlreadyConfirmed() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
-        <h2>¡Gracias, Familia {data.familia}!</h2>
-        <p>Ya hemos recibido tu confirmación 💌.<br></br> Detalles registrados:</p>
+        <h2>¡Gracias, Familia {familia}!</h2>
+        <p>Ya hemos recibido tu confirmación 💌</p>
 
-        <p><strong>¿Asistirá?:</strong> {data.confirmacion ? 'Sí' : 'No'}</p>
+        <div className="confirmation-details">
+          <p><strong>¿Asistirá?:</strong> {confirmacion === 'CONFIRMADO' ? 'Sí' : 'No'}</p>
 
-        {data.confirmacion ? (
-          <p><strong>Asistentes confirmados:</strong> {data.asistentesConfirmados}</p>
-        ) : (
-          <p><strong>Teléfono para enviar el link de Zoom:</strong> {data.telefono}</p>
-        )}
+          {confirmacion === 'CONFIRMADO' && asistentesConfirmados > 0 && (
+            <p><strong>Asistentes confirmados:</strong> {asistentesConfirmados}</p>
+          )}
 
-        {data.mensaje && (
-          <p><strong>Mensaje enviado:</strong><br />"{data.mensaje}"</p>
-        )}
+          {confirmacion === 'NEGADO' && telefono && (
+            <p><strong>Teléfono para enviar el link de Zoom:</strong> {telefono}</p>
+          )}
+
+          {mensaje && (
+            <div className="mensaje">
+              <strong>Mensaje enviado:</strong>
+              <p>"{mensaje}"</p>
+            </div>
+          )}
+        </div>
 
         <p className="success">
-          No necesitas volver a registrarte. Si deseas hacer un cambio, por favor contáctanos. <br></br>¡Gracias!
+          No necesitas volver a registrarte. Si deseas hacer un cambio, por favor contáctanos. <br />¡Gracias!
         </p>
 
         <button onClick={() => navigate('/')}>Volver al inicio</button>

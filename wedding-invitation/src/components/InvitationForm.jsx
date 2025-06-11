@@ -1,10 +1,8 @@
-// src/components/InvitationForm.jsx
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import '../styles/InvitationForm.scss'
 import Layout from './Layout'
 import InvalidCode from '../pages/InvalidCode.jsx'
-import codes from '../utils/codes'
 
 function InvitationForm() {
   const API_URL = import.meta.env.VITE_API_URL
@@ -22,41 +20,42 @@ function InvitationForm() {
 
   const code = new URLSearchParams(location.search).get('code')
 
-  useEffect(() => {
-    if (!code) {
-      setStatus({ loading: false, error: 'Código no proporcionado' })
-      return
-    }
+useEffect(() => {
+  if (!code) {
+    setStatus({ loading: false, error: 'Código no proporcionado' })
+    return
+  }
 
-    fetch(`${API_URL}/api/guests/codigo/${code}`)
-      .then(async res => {
-        const text = await res.text()
-        let data
+  fetch(`${API_URL}/api/guests/codigo/${code}`)
+    .then(async res => {
+      const text = await res.text()
+      let data
 
-        try {
-          data = JSON.parse(text)
-        } catch (err) {
-          throw new Error(text || 'Respuesta inválida del servidor')
-        }
+      try {
+        data = JSON.parse(text)
+      } catch (err) {
+        throw new Error(text || 'Respuesta inválida del servidor')
+      }
 
-        if (data.asistenciaConfirmada) {
-          navigate('/already-confirmed', {
-            state: {
-              confirmacion: data.asistenciaConfirmada,
-              familia: data.nombre || data.familia,
-              telefono: data.telefono || '',
-              asistentesConfirmados: data.asistentesConfirmados
-            }
-          })
-        } else {
-          setGuest(data)
-          setStatus({ loading: false, error: null })
-        }
-      })
-      .catch(err => {
-        setStatus({ loading: false, error: err.message })
-      })
-  }, [code])
+      if (data.estadoConfirmacion && data.estadoConfirmacion !== 'PENDIENTE') {
+        navigate('/already-confirmed', {
+          state: {
+            confirmacion: data.estadoConfirmacion, // 'CONFIRMADO' o 'NEGADO'
+            familia: data.nombre || data.familia,
+            telefono: data.telefono || '',
+            asistentesConfirmados: data.asistentesConfirmados
+          }
+        })
+      } else {
+        setGuest(data)
+        setStatus({ loading: false, error: null })
+      }
+    })
+    .catch(err => {
+      setStatus({ loading: false, error: err.message })
+    })
+}, [code])
+
 
   const handleChange = e => {
     const { name, value } = e.target
@@ -97,6 +96,7 @@ function InvitationForm() {
     setStatus({ loading: true, error: null })
 
     const cuerpo = {
+      asistira: form.asistira === 'si',
       asistentesConfirmados: form.asistira === 'si' ? Number(form.asistentesConfirmados) : 0,
       mensaje: form.mensaje,
       telefono: telefonoLimpio
@@ -117,21 +117,22 @@ function InvitationForm() {
           throw new Error(text || 'Error al confirmar')
         }
 
-        if (!res.ok) {
-          if (data.asistenciaConfirmada !== undefined) {
-            navigate('/already-confirmed', {
-              state: {
-                confirmacion: data.asistenciaConfirmada,
-                familia: data.familia || 'Invitado',
-                telefono: data.telefono || form.telefono,
-                asistentesConfirmados: data.asistentesConfirmados
-              }
-            })
-          } else {
-            throw new Error(data.message || 'Error al confirmar')
-          }
-          return
-        }
+if (!res.ok) {
+  if (data.estadoConfirmacion && data.estadoConfirmacion !== 'PENDIENTE') {
+    navigate('/already-confirmed', {
+      state: {
+        confirmacion: data.estadoConfirmacion,
+        familia: data.familia || 'Invitado',
+        telefono: data.telefono || form.telefono,
+        asistentesConfirmados: data.asistentesConfirmados
+      }
+    })
+  } else {
+    throw new Error(data.message || 'Error al confirmar')
+  }
+  return
+}
+
 
         navigate('/confirmacion', {
           state: {
@@ -228,7 +229,6 @@ function InvitationForm() {
                 maxLength="15"
                 required
               />
-              {/* {formError && <small className="input-error">{formError}</small>} */}
             </label>
           </div>
         )}
