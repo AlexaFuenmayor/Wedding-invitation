@@ -7,9 +7,9 @@ function InvitationCard() {
   console.log('familia trae: ',familia);
   
 
-const familias = {
-  // Familias anteriores...
-  Test_Family_A: 'TEST001',
+  const codes = {
+  // Familias de prueba
+  familia: 'familia',  Test_Family_A: 'TEST001',
   Test_Family_B: 'TEST002',
   Test_Family_C: 'TEST003',
   Test_Family_D: 'TEST004',
@@ -67,7 +67,7 @@ const familias = {
   Nubia_Medina: 'NUME052',
   Wilson_Melgarejo: 'WIME053',
   Guillermina_Medina: 'GUME054',
-};
+  }
 
   // Si “familia” no está en nuestro objeto de códigos, mostramos mensaje de enlace inválido
 if (!codes[familia]) {
