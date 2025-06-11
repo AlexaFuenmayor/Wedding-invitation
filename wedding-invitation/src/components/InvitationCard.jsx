@@ -67,6 +67,7 @@ function InvitationCard() {
   Nubia_Medina: 'NUME052',
   Wilson_Melgarejo: 'WIME053',
   Guillermina_Medina: 'GUME054',
+  Gonzalez_Garcia: 'GOGA038',
   }
 
   // Si “familia” no está en nuestro objeto de códigos, mostramos mensaje de enlace inválido
