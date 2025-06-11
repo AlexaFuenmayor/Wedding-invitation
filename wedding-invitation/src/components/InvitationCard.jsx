@@ -4,6 +4,8 @@ import '../styles/invitation-home.scss'
 function InvitationCard() {
   const navigate = useNavigate()
   const { familia } = useParams()
+  console.log('familia trae: ',familia);
+  
 
   const codes = {
   // Familias de prueba
