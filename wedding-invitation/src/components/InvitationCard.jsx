@@ -7,9 +7,8 @@ function InvitationCard() {
   console.log('familia trae: ',familia);
   
 
-  const codes = {
-  // Familias de prueba
-  familia: 'familia',
+const familias = {
+  // Familias anteriores...
   Test_Family_A: 'TEST001',
   Test_Family_B: 'TEST002',
   Test_Family_C: 'TEST003',
@@ -37,7 +36,7 @@ function InvitationCard() {
   Fuenmayor_Paredes: 'FUPA021',
   Guerere: 'GUER022',
   Paipilla: 'PAIP023',
-  Andrades: 'ANDR024',
+  Andrades_Gil: 'ANDR024',
   Alvarez_Duno: 'ALDU025',
   Sanchez_Suarez: 'SASU026',
   Diaz_Gonzalez: 'DAGO027',
@@ -50,8 +49,25 @@ function InvitationCard() {
   Ramirez_González: 'RAGO034',
   Daniela_Patricia: 'DAPA035',
   Quiñones_Gonzalez: 'QUIG036',
-  Alvarez_Medina: 'ALME038'
-  }
+  Rodriguez_Oropeza: 'ROOR037',
+  Tamayo_Alvarez: 'TAAL038',
+  Marta_Rojas: 'MARO039',
+  Alvarez: 'ALVA040',
+  Santos_Alvarez: 'SAAL041',
+  Dora_Fonseca: 'DOFO042',
+  Yaneth_Medina: 'YAME043',
+  Alfonso_Medina: 'ALME044',
+  Carmen_Rosa: 'CARO045',
+  Nohora_Alvarez: 'NOAL046',
+  Herlinda_Alvarez: 'HEAL047',
+  Luisa_Leon: 'LULE048',
+  Duran_Martinez: 'DUMA049',
+  Baena_Melo: 'BAME050',
+  Beatriz_Baena: 'BEBA051',
+  Nubia_Medina: 'NUME052',
+  Wilson_Melgarejo: 'WIME053',
+  Guillermina_Medina: 'GUME054',
+};
 
   // Si “familia” no está en nuestro objeto de códigos, mostramos mensaje de enlace inválido
 if (!codes[familia]) {
