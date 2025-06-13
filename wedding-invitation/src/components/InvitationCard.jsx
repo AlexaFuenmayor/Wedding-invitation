@@ -68,6 +68,18 @@ function InvitationCard() {
   Wilson_Melgarejo: 'WIME053',
   Guillermina_Medina: 'GUME054',
   Gonzalez_Garcia: 'GOGA038',
+  Luis_Pirela: 'LUPI055',
+    Magdaleno_Medina: 'MAME056',
+  Nava_Garcia: 'NAGA057',
+  Melimar_Garcia: 'MEGA058',
+  Jhoannelis_Rubio: 'JORU059',
+  Edumar_Buenaventura: 'EDBU060',
+  Tania_Ruiz: 'TARU061',
+  Keila_Cali: 'KECA062',
+  Collantes: 'COLL063',
+  Keren_Ortega: 'KEOR064',
+  Katty: 'KATT065',
+  Marcella: 'MARC066',
   }
 
   // Si “familia” no está en nuestro objeto de códigos, mostramos mensaje de enlace inválido
