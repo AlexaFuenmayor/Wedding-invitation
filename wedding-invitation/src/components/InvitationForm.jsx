@@ -148,7 +148,7 @@ function InvitationForm() {
   if (status.loading) {
     return (
       <Layout>
-        <div className="loading-box">Cargando invitación...</div>
+        <div className="loading-box"></div>
       </Layout>
     )
   }
@@ -163,7 +163,7 @@ function InvitationForm() {
   //       <div className="loading-box">Cargando invitación...</div>
   //     </Layout>
   //   )
-  // }
+  // }q
 
   return (
     <div className="invitation-container">
