@@ -157,13 +157,13 @@ function InvitationForm() {
     return <InvalidCode mensaje={status.error} />
   }
 
-  if (!guest) {
-    return (
-      <Layout>
-        <div className="loading-box">Cargando invitación...</div>
-      </Layout>
-    )
-  }
+  // if (!guest) {
+  //   return (
+  //     <Layout>
+  //       <div className="loading-box">Cargando invitación...</div>
+  //     </Layout>
+  //   )
+  // }
 
   return (
     <div className="invitation-container">
