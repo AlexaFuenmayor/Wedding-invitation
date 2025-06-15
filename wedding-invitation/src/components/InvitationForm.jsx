@@ -17,45 +17,47 @@ function InvitationForm() {
   const [formError, setFormError] = useState(null)
   const location = useLocation()
   const navigate = useNavigate()
+  const [code, setCode] = useState(null)
 
-  const code = new URLSearchParams(location.search).get('code')
+  // Extraer el código una vez que location.search esté disponible
+  useEffect(() => {
+    const searchCode = new URLSearchParams(location.search).get('code')
+    if (searchCode) setCode(searchCode)
+  }, [location.search])
 
-useEffect(() => {
-  if (!code) {
-    setStatus({ loading: false, error: 'Código no proporcionado' })
-    return
-  }
+  // Hacer fetch de los datos del invitado cuando ya haya código
+  useEffect(() => {
+    if (!code) return
 
-  fetch(`${API_URL}/api/guests/codigo/${code}`)
-    .then(async res => {
-      const text = await res.text()
-      let data
+    fetch(`${API_URL}/api/guests/codigo/${code}`)
+      .then(async res => {
+        const text = await res.text()
+        let data
 
-      try {
-        data = JSON.parse(text)
-      } catch (err) {
-        throw new Error(text || 'Respuesta inválida del servidor')
-      }
+        try {
+          data = JSON.parse(text)
+        } catch (err) {
+          throw new Error(text || 'Respuesta inválida del servidor')
+        }
 
-      if (data.estadoConfirmacion && data.estadoConfirmacion !== 'PENDIENTE') {
-        navigate('/already-confirmed', {
-          state: {
-            confirmacion: data.estadoConfirmacion, // 'CONFIRMADO' o 'NEGADO'
-            familia: data.nombre || data.familia,
-            telefono: data.telefono || '',
-            asistentesConfirmados: data.asistentesConfirmados
-          }
-        })
-      } else {
-        setGuest(data)
-        setStatus({ loading: false, error: null })
-      }
-    })
-    .catch(err => {
-      setStatus({ loading: false, error: err.message })
-    })
-}, [code])
-
+        if (data.estadoConfirmacion && data.estadoConfirmacion !== 'PENDIENTE') {
+          navigate('/already-confirmed', {
+            state: {
+              confirmacion: data.estadoConfirmacion,
+              familia: data.nombre || data.familia,
+              telefono: data.telefono || '',
+              asistentesConfirmados: data.asistentesConfirmados
+            }
+          })
+        } else {
+          setGuest(data)
+          setStatus({ loading: false, error: null })
+        }
+      })
+      .catch(err => {
+        setStatus({ loading: false, error: err.message })
+      })
+  }, [code])
 
   const handleChange = e => {
     const { name, value } = e.target
@@ -70,18 +72,14 @@ useEffect(() => {
       return false
     }
 
-    if (form.asistira === 'si') {
-      if (Number(form.asistentesConfirmados) < 1) {
-        setFormError('Indica al menos 1 asistente.')
-        return false
-      }
+    if (form.asistira === 'si' && Number(form.asistentesConfirmados) < 1) {
+      setFormError('Indica al menos 1 asistente.')
+      return false
     }
 
-    if (form.asistira === 'no') {
-      if (telefonoLimpio.length < 10) {
-        setFormError('Por favor ingresa un número de teléfono válido (mínimo 10 dígitos).')
-        return false
-      }
+    if (form.asistira === 'no' && telefonoLimpio.length < 10) {
+      setFormError('Por favor ingresa un número de teléfono válido (mínimo 10 dígitos).')
+      return false
     }
 
     setFormError(null)
@@ -117,22 +115,21 @@ useEffect(() => {
           throw new Error(text || 'Error al confirmar')
         }
 
-if (!res.ok) {
-  if (data.estadoConfirmacion && data.estadoConfirmacion !== 'PENDIENTE') {
-    navigate('/already-confirmed', {
-      state: {
-        confirmacion: data.estadoConfirmacion,
-        familia: data.familia || 'Invitado',
-        telefono: data.telefono || form.telefono,
-        asistentesConfirmados: data.asistentesConfirmados
-      }
-    })
-  } else {
-    throw new Error(data.message || 'Error al confirmar')
-  }
-  return
-}
-
+        if (!res.ok) {
+          if (data.estadoConfirmacion && data.estadoConfirmacion !== 'PENDIENTE') {
+            navigate('/already-confirmed', {
+              state: {
+                confirmacion: data.estadoConfirmacion,
+                familia: data.familia || 'Invitado',
+                telefono: data.telefono || form.telefono,
+                asistentesConfirmados: data.asistentesConfirmados
+              }
+            })
+          } else {
+            throw new Error(data.message || 'Error al confirmar')
+          }
+          return
+        }
 
         navigate('/confirmacion', {
           state: {
@@ -151,7 +148,7 @@ if (!res.ok) {
   if (status.loading) {
     return (
       <Layout>
-        <div className="loading-box"></div>
+        <div className="loading-box">Cargando invitación...</div>
       </Layout>
     )
   }
@@ -161,13 +158,12 @@ if (!res.ok) {
   }
 
   if (!guest) {
-  return (
-    <Layout>
-      <div className="loading-box">Cargando invitación...</div>
-    </Layout>
-  )
-}
-
+    return (
+      <Layout>
+        <div className="loading-box">Cargando invitación...</div>
+      </Layout>
+    )
+  }
 
   return (
     <div className="invitation-container">
