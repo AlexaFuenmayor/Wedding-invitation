@@ -105,7 +105,7 @@ if (!codes[familia]) {
   return (
     <div className="envelope" style={{ cursor: 'pointer' }}>
       <button onClick={handleClick} role="button" tabIndex={0}>
-        Confirma Aquí
+        Click Aquí
       </button>
     </div>
   )
