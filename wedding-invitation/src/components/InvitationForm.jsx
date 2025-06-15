@@ -160,7 +160,14 @@ if (!res.ok) {
     return <InvalidCode mensaje={status.error} />
   }
 
-  if (!guest) return null
+  if (!guest) {
+  return (
+    <Layout>
+      <div className="loading-box">Cargando invitación...</div>
+    </Layout>
+  )
+}
+
 
   return (
     <div className="invitation-container">
