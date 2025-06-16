@@ -80,6 +80,7 @@ function InvitationCard() {
   Keren_Ortega: 'KEOR064',
   Katty: 'KATT065',
   Marcella: 'MARC066',
+  Sahara: 'SAHE068',
   }
 
   // Si “familia” no está en nuestro objeto de códigos, mostramos mensaje de enlace inválido
