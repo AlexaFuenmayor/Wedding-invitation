@@ -1,9 +1,4 @@
-// src/components/Layout.jsx
-import { useLocation } from "react-router-dom"
-import { useEffect, useState } from "react"
-import "../styles/Loader.scss"
-
-function Layout({ children }) {
+function Layout({ children, showLoader = false }) {
   const location = useLocation()
   const [loading, setLoading] = useState(false)
 
@@ -14,9 +9,9 @@ function Layout({ children }) {
   }, [location.pathname])
 
   return (
-    <div className="layout-container"> {/* Contenedor relativo */}
+    <div className="layout-container">
       {children}
-      {loading && (
+      {(loading || showLoader) && (
         <div className="loader-overlay">
           <div className="hearts">
             <div className="heart"></div>
@@ -29,6 +24,3 @@ function Layout({ children }) {
     </div>
   )
 }
-
-
-export default Layout

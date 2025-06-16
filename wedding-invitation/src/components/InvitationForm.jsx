@@ -145,23 +145,23 @@ function InvitationForm() {
       })
   }
 
-  if (status.loading) {
-    return (
-      <Layout>
-      </Layout>
-    )
-  }
+if (status.loading) {
+  return (
+    <Layout showLoader={true} />
+  )
+}
+
 
   if (status.error) {
     return <InvalidCode mensaje={status.error} />
   }
 
-  if (!guest) {
-    return (
-      <Layout>
-      </Layout>
-    )
-  }
+if (!guest) {
+  return (
+    <Layout showLoader={true} />
+  )
+}
+
 
   return (
     <div className="invitation-container">
