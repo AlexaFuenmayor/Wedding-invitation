@@ -254,6 +254,6 @@ if (!guest) {
       </form>
     </div>
   )
-}
+};
 
 export default InvitationForm
