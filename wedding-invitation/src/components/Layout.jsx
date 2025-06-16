@@ -1,3 +1,8 @@
+// src/components/Layout.jsx
+import { useLocation } from "react-router-dom"
+import { useEffect, useState } from "react"
+import "../styles/Loader.scss"
+
 function Layout({ children, showLoader = false }) {
   const location = useLocation()
   const [loading, setLoading] = useState(false)
@@ -24,3 +29,7 @@ function Layout({ children, showLoader = false }) {
     </div>
   )
 }
+
+
+
+export default Layout

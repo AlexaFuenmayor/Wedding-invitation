@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import '../styles/InvitationForm.scss'
-import Layout from './Layout'
+import Layout from '../components/Layout.jsx'
 import InvalidCode from '../pages/InvalidCode.jsx'
 
 function InvitationForm() {
