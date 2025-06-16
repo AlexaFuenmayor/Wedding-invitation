@@ -148,7 +148,6 @@ function InvitationForm() {
   if (status.loading) {
     return (
       <Layout>
-        <div className="loading-box"></div>
       </Layout>
     )
   }
@@ -160,7 +159,6 @@ function InvitationForm() {
   if (!guest) {
     return (
       <Layout>
-        <div className="loading-box"></div>
       </Layout>
     )
   }
