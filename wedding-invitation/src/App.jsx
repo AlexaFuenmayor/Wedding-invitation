@@ -1,4 +1,5 @@
 // src/App.jsx
+import React, { useEffect } from 'react'; // ✅ Importar aquí
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout'
 import InvitationCard from './components/InvitationCard'
@@ -8,6 +9,15 @@ import AlreadyConfirmed from './pages/AlreadyConfirmed'
 import InvalidCode from './pages/InvalidCode'
 
 function App() {
+  const API_URL = import.meta.env.VITE_API_URL
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/guests/ping`)
+      .then(res => res.text())
+      .then(text => console.log('Backend despierto:', text))
+      .catch(err => console.error('No se pudo hacer ping al backend:', err))
+  }, []) // [] para que se ejecute solo una vez
+
   return (
     <Layout>
       <Routes>
