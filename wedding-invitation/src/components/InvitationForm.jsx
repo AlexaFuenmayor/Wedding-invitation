@@ -224,7 +224,7 @@ function InvitationForm() {
               maxLength="300"
               value={form.mensaje}
               onChange={handleChange}
-              placeholder="¡Déjanos unas palabras lindas!"
+              placeholder="¡Escribe Aquí!"
             />
           </label>
         </div>

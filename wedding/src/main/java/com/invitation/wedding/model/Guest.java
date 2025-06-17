@@ -14,7 +14,10 @@ public class Guest {
     private String familia;
     private Integer maxAsistentes;
     private Integer asistentesConfirmados;
+
+    @Column(columnDefinition = "TEXT")
     private String mensaje;
+
     private String telefono;
 
     @Enumerated(EnumType.STRING)
