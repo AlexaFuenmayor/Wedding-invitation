@@ -6,9 +6,13 @@ import InvalidCode from '../pages/InvalidCode.jsx'
 
 function InvitationForm() {
   const API_URL = import.meta.env.VITE_API_URL
+  const location = useLocation()
+  const navigate = useNavigate()
+
   const [guest, setGuest] = useState(null)
   const [code, setCode] = useState(null)
-  const [status, setStatus] = useState({ loading: true, error: null })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [formError, setFormError] = useState(null)
   const [form, setForm] = useState({
     asistira: '',
@@ -17,45 +21,51 @@ function InvitationForm() {
     telefono: ''
   })
 
-  const location = useLocation()
-  const navigate = useNavigate()
-
+  // Obtener el código de la URL
   useEffect(() => {
     const searchCode = new URLSearchParams(location.search).get('code')
-    if (searchCode) setCode(searchCode)
+    if (!searchCode) {
+      navigate('/invalid-code', { replace: true })
+    } else {
+      setCode(searchCode)
+    }
   }, [location.search])
 
+  // Cargar datos del invitado por código
   useEffect(() => {
     if (!code) return
 
-    fetch(`${API_URL}/api/guests/codigo/${code}`)
-      .then(async res => {
+    const fetchGuest = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/guests/codigo/${code}`)
         const text = await res.text()
-        let data
 
-        try {
-          data = JSON.parse(text)
-        } catch {
-          throw new Error(text || 'Respuesta inválida del servidor')
-        }
+        if (!res.ok) throw new Error(text || 'Código inválido')
+        const data = JSON.parse(text)
+
+        if (!data || typeof data !== 'object') throw new Error('Invitado no encontrado')
 
         if (data.estadoConfirmacion && data.estadoConfirmacion !== 'PENDIENTE') {
           navigate('/already-confirmed', {
             state: {
               confirmacion: data.estadoConfirmacion,
-              familia: data.nombre || data.familia,
-              telefono: data.telefono || '',
+              familia: data.familia || 'Invitado',
+              telefono: data.telefono,
               asistentesConfirmados: data.asistentesConfirmados
             }
           })
         } else {
           setGuest(data)
-          setStatus({ loading: false, error: null })
         }
-      })
-      .catch(err => {
-        setStatus({ loading: false, error: err.message })
-      })
+      } catch (err) {
+        console.error('Error al cargar invitado:', err)
+        setError(err.message || 'No se pudo cargar la invitación.')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchGuest()
   }, [code])
 
   const handleChange = e => {
@@ -90,9 +100,9 @@ function InvitationForm() {
     if (!validateForm()) return
 
     const telefonoLimpio = form.telefono.replace(/\D/g, '')
-    setStatus({ loading: true, error: null })
+    setLoading(true)
 
-    const cuerpo = {
+    const payload = {
       asistira: form.asistira === 'si',
       asistentesConfirmados: form.asistira === 'si' ? Number(form.asistentesConfirmados) : 0,
       mensaje: form.mensaje,
@@ -103,17 +113,11 @@ function InvitationForm() {
       const res = await fetch(`${API_URL}/api/guests/codigo/${code}/confirmar`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(cuerpo)
+        body: JSON.stringify(payload)
       })
 
       const text = await res.text()
-      let data = {}
-
-      try {
-        data = JSON.parse(text)
-      } catch {
-        throw new Error(text || 'Error en la respuesta del servidor')
-      }
+      const data = JSON.parse(text)
 
       if (!res.ok) {
         if (data.estadoConfirmacion && data.estadoConfirmacion !== 'PENDIENTE') {
@@ -121,31 +125,34 @@ function InvitationForm() {
             state: {
               confirmacion: data.estadoConfirmacion,
               familia: data.familia || 'Invitado',
-              telefono: data.telefono || form.telefono,
+              telefono: data.telefono || payload.telefono,
               asistentesConfirmados: data.asistentesConfirmados
             }
           })
         } else {
-          throw new Error(data.message || 'Error al confirmar')
+          throw new Error(data.message || 'Error al confirmar asistencia.')
         }
         return
       }
 
       navigate('/confirmacion', {
         state: {
-          confirmacion: form.asistira === 'si',
+          confirmacion: payload.asistira,
           familia: data.familia || 'Invitado',
-          telefono: data.telefono || form.telefono,
+          telefono: data.telefono || payload.telefono,
           asistentesConfirmados: data.asistentesConfirmados
         }
       })
     } catch (err) {
-      setStatus({ loading: false, error: err.message })
+      console.error('Error al enviar confirmación:', err)
+      setError(err.message || 'No se pudo enviar la confirmación.')
+      setLoading(false)
     }
   }
 
-  if (status.loading || !guest) return <Layout showLoader={true} />
-  if (status.error) return <InvalidCode mensaje={status.error} />
+  // CARGANDO / ERROR / FORMULARIO
+  if (loading) return <Layout showLoader={true} />
+  if (error || !guest) return <InvalidCode mensaje={error || 'Invitado no válido'} />
 
   return (
     <div className="invitation-container">
@@ -197,10 +204,10 @@ function InvitationForm() {
             borderRadius: '10px',
             margin: '1em 0'
           }}>
-            <p>Sentimos mucho que no puedas estar presente en esta fecha tan importante. </p>
+            <p>Sentimos mucho que no puedas estar presente en esta fecha tan importante.</p>
             <p>
-              Aún así tendremos <strong>transmisión</strong> para la ceremonia.
-              Por favor, déjanos tu número de teléfono para enviarte el link por WhatsApp. <br></br> ¡Gracias!
+              Aun así tendremos <strong>transmisión</strong> para la ceremonia.
+              Déjanos tu número para enviarte el link por WhatsApp.
             </p>
             <label>
               Tu teléfono:
@@ -234,8 +241,8 @@ function InvitationForm() {
 
         {formError && <p className="input-error">{formError}</p>}
 
-        <button type="submit" disabled={status.loading}>
-          {status.loading ? 'Enviando...' : 'Enviar'}
+        <button type="submit" disabled={loading}>
+          {loading ? 'Enviando...' : 'Enviar'}
         </button>
       </form>
     </div>

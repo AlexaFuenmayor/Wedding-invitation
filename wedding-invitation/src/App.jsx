@@ -16,7 +16,7 @@ function App() {
         <Route path="/form" element={<InvitationForm />} />
         <Route path="/confirmacion" element={<ConfirmationPage />} />
         <Route path="/already-confirmed" element={<AlreadyConfirmed />} />
-        <Route path="/codigo-invalido" element={<InvalidCode />} />
+        <Route path="/invalid-code" element={<InvalidCode />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>
