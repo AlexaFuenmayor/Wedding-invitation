@@ -197,8 +197,11 @@ function InvitationForm() {
             borderRadius: '10px',
             margin: '1em 0'
           }}>
-            <p>Te extrañaremos. ❤️</p>
-            <p>Déjanos tu número para enviarte el link por WhatsApp.</p>
+            <p>Sentimos mucho que no puedas estar presente en esta fecha tan importante. </p>
+            <p>
+              Aún así tendremos <strong>transmisión</strong> para la ceremonia.
+              Por favor, déjanos tu número de teléfono para enviarte el link por WhatsApp. <br></br> ¡Abrazos!
+            </p>
             <label>
               Tu teléfono:
               <input
