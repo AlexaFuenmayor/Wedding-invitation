@@ -101,6 +101,9 @@ public class GuestController {
     // -----------------------------
     // INVITADO: Confirmar asistencia por código
     // -----------------------------
+// -----------------------------
+// INVITADO: Confirmar asistencia por código
+// -----------------------------
     @PutMapping("/codigo/{codigo}/confirmar")
     public ResponseEntity<?> confirmarAsistencia(
             @PathVariable String codigo,
@@ -108,18 +111,25 @@ public class GuestController {
     ) {
         return guestRepository.findByCodigoAcceso(codigo)
                 .map(guest -> {
-                    if (guest.getEstadoConfirmacion() == EstadoConfirmacion.CONFIRMADO || guest.getEstadoConfirmacion() == EstadoConfirmacion.NEGADO) {
+                    if (guest.getEstadoConfirmacion() == EstadoConfirmacion.CONFIRMADO ||
+                            guest.getEstadoConfirmacion() == EstadoConfirmacion.NEGADO) {
                         return ResponseEntity.status(400).body("Ya se ha registrado una respuesta anteriormente.");
                     }
 
                     boolean asistira = Boolean.TRUE.equals(confirmacion.getAsistira());
 
-                    if (asistira && confirmacion.getAsistentesConfirmados() > guest.getMaxAsistentes()) {
-                        return ResponseEntity.badRequest().body("Número de asistentes excede el máximo permitido.");
+                    // 🔐 Validación importante: asegurarse de que el campo no sea null
+                    if (guest.getMaxAsistentes() == null) {
+                        return ResponseEntity.status(500).body("El invitado no tiene definido el máximo de asistentes.");
+                    }
+
+                    Integer asistentes = confirmacion.getAsistentesConfirmados();
+                    if (asistira && (asistentes == null || asistentes < 1 || asistentes > guest.getMaxAsistentes())) {
+                        return ResponseEntity.badRequest().body("Número de asistentes inválido.");
                     }
 
                     guest.setEstadoConfirmacion(asistira ? EstadoConfirmacion.CONFIRMADO : EstadoConfirmacion.NEGADO);
-                    guest.setAsistentesConfirmados(asistira ? confirmacion.getAsistentesConfirmados() : 0);
+                    guest.setAsistentesConfirmados(asistira ? asistentes : 0);
                     guest.setMensaje(confirmacion.getMensaje());
                     guest.setTelefono(confirmacion.getTelefono());
 
@@ -128,4 +138,16 @@ public class GuestController {
                 })
                 .orElse(ResponseEntity.status(404).body("Código no válido"));
     }
+
+
+
+
+    // -----------------------------
+// PING: Para mantener backend despierto
+// -----------------------------
+    @GetMapping("/ping")
+    public ResponseEntity<String> ping() {
+        return ResponseEntity.ok("pong");
+    }
+
 }
