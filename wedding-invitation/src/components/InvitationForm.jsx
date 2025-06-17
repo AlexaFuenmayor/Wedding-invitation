@@ -200,7 +200,7 @@ function InvitationForm() {
             <p>Sentimos mucho que no puedas estar presente en esta fecha tan importante. </p>
             <p>
               Aún así tendremos <strong>transmisión</strong> para la ceremonia.
-              Por favor, déjanos tu número de teléfono para enviarte el link por WhatsApp. <br></br> ¡Abrazos!
+              Por favor, déjanos tu número de teléfono para enviarte el link por WhatsApp. <br></br> ¡Gracias!
             </p>
             <label>
               Tu teléfono:
