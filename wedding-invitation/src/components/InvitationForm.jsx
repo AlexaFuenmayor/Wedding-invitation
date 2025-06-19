@@ -231,7 +231,7 @@ function InvitationForm() {
             <textarea
               name="mensaje"
               rows="3"
-              maxLength="300"
+              maxLength="1000"
               value={form.mensaje}
               onChange={handleChange}
               placeholder="¡Escribe Aquí!"
