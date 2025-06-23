@@ -158,7 +158,7 @@ function InvitationForm() {
     <div className="invitation-container">
       <section style={{ marginBottom: '20px' }}>
         <h1>Familia {guest.familia} <br /> ¡Están invitados a nuestra boda!</h1>
-        <p>Nos encantaría contar con su presencia</p>
+        <p>Nos gustaría contar con su presencia</p>
       </section>
 
       <form onSubmit={handleSubmit}>
