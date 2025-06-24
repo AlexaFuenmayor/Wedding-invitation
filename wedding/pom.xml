@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.invitation</groupId>
-	<artifactId>wedding</artifactId>
+	<artifactId>wedding-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>wedding</name>
 	<description>Wedding Invitation</description>
