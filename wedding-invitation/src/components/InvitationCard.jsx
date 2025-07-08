@@ -108,7 +108,7 @@ function InvitationCard() {
   return (
     <div className="envelope" style={{ cursor: 'pointer' }}>
       <button onClick={handleClick} role="button" tabIndex={0}>
-        Click Aquí
+        Clic Aquí
       </button>
     </div>
   )
