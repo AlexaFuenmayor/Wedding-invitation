@@ -75,15 +75,20 @@ function InvitationCard() {
     Melimar_Garcia: 'MEGA058',
     Jhoannelis_Rubio: 'JORU059',
     Edumar_Buenaventura: 'EDBU060',
-    Tania_Ruiz: 'TARU061',
-    Keila_Cali: 'KECA062',
     Collante: 'COLL063',
     Keren_Ortega: 'KEOR064',
     Katty: 'KATT065',
     Marcella: 'MARC066',
     Sahara: 'SAHE068',
     Becknal: 'BECK069',
-    Balza_hernandez:'BALZHER'
+    Balza_hernandez:'BALZHER',
+    Paulina: 'PAULINA',
+    Gloria: 'GLORIA',
+    Rodriguez: 'RODRIGUEZ',
+    Rueda_Sanchez: 'RUEDA_SANCHEZ',
+    Gabriel: 'GABRIEL',
+
+
 
   }
 
