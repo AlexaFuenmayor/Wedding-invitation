@@ -25,7 +25,7 @@ function InvitationCard() {
     // Magdaleno_Quintero: 'MQUI009',
     Magdaleno_Romero: 'MROM010',
     Magdaleno_Toyo: 'MTOY011',
-    // Sibada_Colina: 'SICO012',
+     Sibada_Colina: 'SICO012',
     // Yedra_Sibada: 'YESI013',
     Eyismar_Bazan: 'EYBA014',
     // Dairy_Nava: 'DINA015',
