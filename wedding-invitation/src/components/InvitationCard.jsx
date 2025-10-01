@@ -71,7 +71,12 @@ function InvitationCard() {
     paulina: 'PAULINA',
     gloria: 'GLORIA',
     rodriguez: 'RODRIGUEZ',
-    josué_torrez: "JOSUE"
+    josué_torrez: "JOSUE",
+    magnolia: 'MAGNOLIA',
+    rueda_paipilla: 'RUEDAP',
+    gabriel: 'GABRIEL',
+    payares_contreras: 'PAYCON'
+
 
 
 
